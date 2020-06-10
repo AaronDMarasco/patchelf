@@ -24,5 +24,13 @@ fi
 AC_DEFINE_UNQUOTED(PAGESIZE, ${PAGESIZE})
 AC_MSG_RESULT([Setting page size to ${PAGESIZE}])
 
+AC_ARG_WITH([asan],
+   AS_HELP_STRING([--with-asan], [Link with libasan])
+)
+AM_CONDITIONAL([WITH_ASAN], [test x"$with_asan" = xyes])
+
+#AS_IF([test x"$with_asan" == xyes],
+#   AC_DEFINE([WITH_ASAN], [1], [Use libasan]))
+
 AC_CONFIG_FILES([Makefile src/Makefile tests/Makefile patchelf.spec])
 AC_OUTPUT
