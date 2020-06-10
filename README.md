@@ -1,4 +1,4 @@
-PatchELF is a simple utility for modifing existing ELF executables and
+PatchELF is a simple utility for modifying existing ELF executables and
 libraries.  In particular, it can do the following:
 
 * Change the dynamic loader ("ELF interpreter") of executables:
@@ -18,6 +18,14 @@ libraries.  In particular, it can do the following:
   For instance, if an executable references one library libfoo.so, has
   an RPATH "/lib:/usr/lib:/foo/lib", and libfoo.so can only be found
   in /foo/lib, then the new RPATH will be "/foo/lib".
+
+  In addition, the '--allowed-rpath-prefixes' option can be used for
+  further rpath tuning. For instance, if an executable has an RPATH
+  "/tmp/build-foo/.libs:/foo/lib", it is probably desirable to keep
+  the "/foo/lib" reference instead of the "/tmp" entry. To accomplish
+  that, use:
+
+  $ patchelf --shrink-rpath --allowed-rpath-prefixes /usr/lib:/foo/lib my-program
 
 * Remove declared dependencies on dynamic libraries (DT_NEEDED
   entries):
@@ -39,13 +47,25 @@ libraries.  In particular, it can do the following:
 
   This option can be give multiple times.
 
+* Change SONAME of a dynamic library:
 
-AUTHOR
-
-Copyright 2004-2013 Eelco Dolstra <eelco.dolstra@logicblox.com>.
+  $ patchelf --set-soname libnewname.so.3.4.5 path/to/libmylibrary.so.1.2.3
 
 
-LICENSE
+## COMPILING & TESTING
+
+    ./bootstrap.sh
+    ./configure
+    make
+    sudo make install
+    make check
+
+## AUTHOR
+
+Copyright 2004-2019 Eelco Dolstra <edolstra@gmail.com>.
+
+
+## LICENSE
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,22 +80,37 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+## RELEASE HISTORY
 
-HOMEPAGE
+0.11 (June 9, 2020):
 
-http://nixos.org/patchelf.html
+* New `--output` flag.
 
+* Some bug fixes.
 
-BUGS
+0.10 (March 28, 2019):
 
-The `strip' command from binutils generated broken executables when
-applied to the output of patchelf (if `--set-rpath' or
-`--set-interpreter' with a larger path than the original is used).
-This appears to be a bug in binutils
-(http://bugs.strategoxt.org/browse/NIXPKGS-85).
+* Many bug fixes. Please refer to the Git commit log:
 
+    https://github.com/NixOS/patchelf/commits/master
 
-RELEASE HISTORY
+  This release has contributions from Adam Trhoň, Benjamin Hipple,
+  Bernardo Ramos, Bjørn Forsman, Domen Kožar, Eelco Dolstra, Ezra
+  Cooper, Felipe Sateler, Jakub Wilk, James Le Cuirot, Karl Millar,
+  Linus Heckemann, Nathaniel J. Smith, Richard Purdie, Stanislav
+  Markevich and Tuomas Tynkkynen.
+
+0.9 (February 29, 2016):
+
+* Lots of new features. Please refer to the Git commit log:
+
+    https://github.com/NixOS/patchelf/commits/master
+
+  This release has contributions from Aaron D. Marasco, Adrien
+  Devresse, Alexandre Pretyman, Changli Gao, Chingis Dugarzhapov,
+  darealshinji, David Sveningsson, Eelco Dolstra, Felipe Sateler,
+  Jeremy Sanders, Jonas Kuemmerlin, Thomas Tuegel, Tuomas Tynkkynen,
+  Vincent Danjean and Vladimír Čunát.
 
 0.8 (January 15, 2014):
 
@@ -135,4 +170,3 @@ RELEASE HISTORY
 0.1 (October 11, 2005):
 
 * Initial release.
-
