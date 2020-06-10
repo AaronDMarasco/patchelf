@@ -29,8 +29,5 @@ AC_ARG_WITH([asan],
 )
 AM_CONDITIONAL([WITH_ASAN], [test x"$with_asan" = xyes])
 
-#AS_IF([test x"$with_asan" == xyes],
-#   AC_DEFINE([WITH_ASAN], [1], [Use libasan]))
-
 AC_CONFIG_FILES([Makefile src/Makefile tests/Makefile patchelf.spec])
 AC_OUTPUT
