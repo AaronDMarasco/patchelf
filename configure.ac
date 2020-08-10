@@ -23,10 +23,5 @@ AC_ARG_WITH([asan],
 )
 AM_CONDITIONAL([WITH_ASAN], [test x"$with_asan" = xyes])
 
-AC_ARG_WITH([asan],
-   AS_HELP_STRING([--with-asan], [Link with libasan])
-)
-AM_CONDITIONAL([WITH_ASAN], [test x"$with_asan" = xyes])
-
 AC_CONFIG_FILES([Makefile src/Makefile tests/Makefile patchelf.spec])
 AC_OUTPUT
